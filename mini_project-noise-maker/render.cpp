@@ -1,8 +1,5 @@
 /*
-leaf cruncher - noise maker
-
-WARNING: FEEDBACKER CLIP VALUES >1.0 MAY BE DANGEROUS.
-- feedbacker clip is the limit of the hard clip applied to the feedbacker output, use values above 1.0 with caution.
+field thresher - noise maker
 
 - in order to use this noise maker a sample must be loaded into the sample player.
 - it operates in a similar manner to no-input mixing. 
@@ -53,7 +50,8 @@ bool setup(BelaContext *context, void *userData){
 	// feedbacker GUI
 	guiController.addSlider("Feedbacker Gain", 0.5f, 0.0f, 1.1f);
 	guiController.addSlider("Feedbacker Delay (Samples)", 1103, 1, 4410);
-	guiController.addSlider("Feedbacker Hard Clip", 1.0f, 0.1f, 1.1f);
+	guiController.addSlider("Feedbacker Clip", 1.0f, 0.1f, 1.1f);
+	// pan GUI
 	guiController.addSlider("Pan L<->R", 0.5f, 0.0f, 1.0f);
 	
 	// set path for audio file and load audio into a source file buffer
