@@ -24,12 +24,15 @@ float Feedbacker::process(float input, float gainMult, unsigned int delaySamples
 	// polynomial soft clipping
 	y = y / (1.0f + fabsf(y));
 	
+	// hard clip for distortion
+	y = fminf(fmaxf(y, -clipLimit), clipLimit); 
+	
 	// update delay
 	delayBuffer[writeIndex] = y; // write to buffer
 	writeIndex = (writeIndex + 1) % bufferSize; // increment & wrap circular buffer
 	
 	// hard clip lower and upper limits of the signal for safety
-	y = fminf(fmaxf(y, -clipLimit), clipLimit); 
+	y = fminf(fmaxf(y, -1.0f), 1.0f); 
 	
 	return y;
 };

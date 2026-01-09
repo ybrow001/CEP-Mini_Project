@@ -53,7 +53,7 @@ bool setup(BelaContext *context, void *userData){
 	// feedbacker GUI
 	guiController.addSlider("Feedbacker Gain", 0.5f, 0.0f, 1.1f);
 	guiController.addSlider("Feedbacker Delay (Samples)", 1103, 1, 4410);
-	guiController.addSlider("Feedbacker Clip", 1.0f, 0.33f, 1.33f);
+	guiController.addSlider("Feedbacker Hard Clip", 1.0f, 0.1f, 1.1f);
 	guiController.addSlider("Pan L<->R", 0.5f, 0.0f, 1.0f);
 	
 	// set path for audio file and load audio into a source file buffer
@@ -78,6 +78,8 @@ void render(BelaContext *context, void *userData) { // audio block rate loop
 
     for(unsigned int n = 0; n < context->audioFrames; n++) { // sample rate loop
     	
+    	/* GUI sliders */
+    	
     	// update parameters using sliders directly or using variabes
     	hpf.update(
     		guiController.getSliderValue(0), // cutoff
@@ -99,13 +101,14 @@ void render(BelaContext *context, void *userData) { // audio block rate loop
     	float feedbackerDelay = guiController.getSliderValue(8);
     	float feedbackerClip = guiController.getSliderValue(9);
     	
+    	/* processing */
+    	
     	// sample rate panning
     	float currentLeftGain = previousLeftGain + (n * panInterpolationStepL);
     	float currentRightGain = previousRightGain + (n * panInterpolationStepR);
     	
     	// call play method of player
-    	float dryOut = player.play(0);
-    	dryOut = player.play(1);
+    	float dryOut = (player.play(0) + player.play(1)) * 0.5f;
     	
     	// process audio with filters
     	// dry and wet levels included in filters for control over noise output
@@ -114,6 +117,8 @@ void render(BelaContext *context, void *userData) { // audio block rate loop
     	
     	// process audio with feedbacker & output
     	float out = feedbacker.process(dryOut, feedbackerGain, feedbackerDelay, feedbackerClip);
+    	
+    	/* output */
     	
     	// pan audio using left & right channels
     	audioWrite(context, n, 0, out * currentLeftGain);
