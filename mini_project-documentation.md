@@ -21,7 +21,7 @@ Leaf Cruncher is a noise generating software instrument. It creates noise via th
 The inspiration for this project came from my own music practice. Over the last few year, I have tried various ways of creating harsh noise. Including digital audio workstation (DAW) plug-ins and analogue non-input mixing<sup>1</sup>. 
 During this creative work, I found a lack of techniques within the digital methods I was using, that enabled me to have a greater degree of control over the qualities of the noise being produced. In particular, ways of processing input sounds so that possible outputs would provide a wide range of noise quality, from soft to harsh noise, derived from the input audio. Something that could prove to be a dynamic and interesting sound design and performance instrument.
 
-**Further Developments**
+*Further Developments*:
 
 - Mixing of multiple audio files.
 
@@ -48,7 +48,7 @@ All of the above improvements would greatly increase the programme's usability f
 
 ### Technical Explanation
 
-The programming is comprised of multiple classes handing different parts of audio processing, which are implemented in the main **render.cpp** file. In conjuction with one another, these classes are able to create playable, varied and dynamic noise from an audio file. <br>
+The programming is comprised of multiple classes handing different parts of audio processing, which are implemented in the main *render.cpp* file. In conjuction with one another, these classes are able to create playable, varied and dynamic noise from an audio file. <br>
 
 These classes include: <br>
 - SamplePlayer - simple audio player, outputting pre-loaded audio files.
@@ -61,18 +61,24 @@ These classes include: <br>
 
 The SamplePlayer class was borrowed from the Creative Embedded Programming Week #3 Lab 0 task Loading and Playing Samples, Using a Circular Buffer for Delay. 
 
-It loads an audio file into a buffer, linked via an appropriate file pathway in the .load() method of the class. 
-Calling on the .play() method within the sample rate loop in the render.cpp file, a read pointer is incremented through the indicies of the buffer. By outputting the datafrom from the read pointer and passing this signal to the audioWrite() function in the same render.cpp loop, the audio output of the player made audible.  
+It loads an audio file into a buffer, linked via an appropriate file pathway in the *.load()* method of the class. 
+Calling on the *.play()* method within the sample rate loop in the render.cpp file, a read pointer is incremented through the indicies of the buffer. By outputting the datafrom from the read pointer and passing this signal to the audioWrite() function in the same render.cpp loop, the audio output of the player made audible.  
 The read pointer is also wrapped back around to the start of the buffer once it reaches the end, to avoid error from reading indicies that do not exist.
+
+**added .setgain()**
 
 - feedbacker -
 
 The Feedbacker is central to the function of this programme. It takes the audio signal output by the sample player, following processing by the high- and low-pass filters, and uses it as the source for noice generation.  
 This class can be broken down into three sub-features: short delay and comb filter, feedback, and clipping. These produce the noise output by delaying the audio input, feeding it back into itself and applying clipping as a source of non-linearities and a safety feature.  <br>
-The delay and feedback work together as an Infinite Impulse Response filter. The delay features a short delay time measured in samples, from 1 sample up to 4,410 samples, or 1/10 of a second. This short delay time creates a comb filter, through the introduction of constructive and destructive interference to the signal, resulting in audible resonant frequencies in the noise output.  
-Together the very short feedback loop and comb filter resonances produce sounds, such as instant or near instant, infinite feeback and resonant frequencies, similar to those encountered in no-input mixing.  <br>
-Alongside the application of the IIR delay and comb filter system is the use of clipping. This is implemented is three stages: soft clipping, using a hyperbolic tangent (tanh) function, similarly soft polynomial clipping and hard clipping limiting the upper and lower bounds of the output's amplitude.  
-What these do is ... 
+
+The delay and feedback work together as an Infinite Impulse Response (IIR) filter. The delay features extremely short delay times measured in samples, from 1 sample up to 4,410 samples, or 1/10 of a second. This short delay time creates a comb filter through the introduction of constructive and destructive interference to the signal, resulting in audible resonant frequencies in the noise output.  
+Together the short feedback loop and comb filter resonances produce outputs, such as instant or near instant feeback and resonant frequencies, similar to those encountered in no-input mixing.  <br>
+
+Alongside the application of the IIR delay/comb filter system is the use of clipping. This is implemented is three stages: soft clipping, using a hyperbolic tangent (tanh) function, soft polynomial clipping and hard clipping that limits the upper and lower bounds of the output's amplitude.  
+These clippers introduce non-linearity, colour and distortion to the output signal. Non-linearity prevents infinite feedback loops and allows the system to maintain a state of contained chaos, in much the same way as no-input mixing. 
+The soft clipping of the tanh function can provides saturation resembling analogue systems to the sound and the polynomial clipping can provide a harsh, more digital sound. Used alongside one another, they introduce variation and chaos into the system producing interesting results.
+Finally, the hard clipping at the end of the signal chain is used, primarily, to contain the signal's amplitude within relatively safe limits, preventing hardware or hearing damage. It also serves to produce the harsh distortion and "cutting out" typically associated with clipping, when applied very aggressively, and let through extra hot signals internally when opened fully.
 
 - hpf - 
 
