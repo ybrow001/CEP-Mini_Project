@@ -21,7 +21,7 @@ Leaf Cruncher is a noise generating software instrument. It creates noise via th
 The inspiration for this project came from my own music practice. Over the last few year, I have tried various ways of creating harsh noise. Including digital audio workstation (DAW) plug-ins and analogue non-input mixing<sup>1</sup>. 
 During this creative work, I found a lack of techniques within the digital methods I was using, that enabled me to have a greater degree of control over the qualities of the noise being produced. In particular, ways of processing input sounds so that possible outputs would provide a wide range of noise quality, from soft to harsh noise, derived from the input audio. Something that could prove to be a dynamic and interesting sound design and performance instrument.
 
-Further developments:
+**Further Developments**
 
 - Mixing of multiple audio files.
 
@@ -48,7 +48,37 @@ All of the above improvements would greatly increase the programme's usability f
 
 ### Technical Explanation
 
+The programming is comprised of multiple classes handing different parts of audio processing, which are implemented in the main **render.cpp** file. In conjuction with one another, these classes are able to create playable, varied and dynamic noise from an audio file. <br>
 
+These classes include: <br>
+- SamplePlayer - simple audio player, outputting pre-loaded audio files.
+- Feedbacker - the feedback, sound distortion and safety core of the programme.
+- HighpassFilter - implementing a biquad highpass filter.
+- LowpassFilter - implementing a biquad lowpass filter.
+<br>
+
+- sample player -
+
+The SamplePlayer class was borrowed from the Creative Embedded Programming Week #3 Lab 0 task Loading and Playing Samples, Using a Circular Buffer for Delay. 
+
+It loads an audio file into a buffer, linked via an appropriate file pathway in the .load() method of the class. 
+Calling on the .play() method within the sample rate loop in the render.cpp file, a read pointer is incremented through the indicies of the buffer. By outputting the datafrom from the read pointer and passing this signal to the audioWrite() function in the same render.cpp loop, the audio output of the player made audible.  
+The read pointer is also wrapped back around to the start of the buffer once it reaches the end, to avoid error from reading indicies that do not exist.
+
+- feedbacker -
+
+The Feedbacker is central to the function of this programme. It takes the audio signal output by the sample player, following processing by the high- and low-pass filters, and uses it as the source for noice generation.  
+This class can be broken down into three sub-features: short delay and comb filter, feedback, and clipping. These produce the noise output by delaying the audio input, feeding it back into itself and applying clipping as a source of non-linearities and a safety feature.  <br>
+The delay and feedback work together as an Infinite Impulse Response filter. The delay features a short delay time measured in samples, from 1 sample up to 4,410 samples, or 1/10 of a second. This short delay time creates a comb filter, through the introduction of constructive and destructive interference to the signal, resulting in audible resonant frequencies in the noise output.  
+Together the very short feedback loop and comb filter resonances produce sounds, such as instant or near instant, infinite feeback and resonant frequencies, similar to those encountered in no-input mixing.  <br>
+Alongside the application of the IIR delay and comb filter system is the use of clipping. This is implemented is three stages: soft clipping, using a hyperbolic tangent (tanh) function, similarly soft polynomial clipping and hard clipping limiting the upper and lower bounds of the output's amplitude.  
+What these do is ... 
+
+- hpf - 
+
+- lpf - 
+
+- implementation and render - 
 
 ## References
 
@@ -60,4 +90,4 @@ All of the above improvements would greatly increase the programme's usability f
 
 X. DSP Cookbook - Robert Bristow-Johnson, Raymond Toy:
 - https://www.w3.org/TR/audio-eq-cookbook/#formulae
-- Used as reference for the Biquad BPF (constant 0db peak) formula.
+- Used as reference for the biquad highpass and lowpass filters.
