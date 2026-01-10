@@ -17,7 +17,7 @@ Alongside the Bela itself, it requires a way of listening to the audio output vi
 
 The project can be used by uploading the files in to the Bela IDE, running and opening the GUI window from the Bela IDE. From there the output sound can be sculpted by altering slider values and experimenting!  
 
-If the user wishes to change the sound file, an new WAV file can be uploaded into the project folder. Then the file name must replaced in the *.load()* method of the *SamplePlayer* class, in the *setup()* function of the *render.cpp* file.  
+If the user wishes to change the sound file, an new WAV file can be uploaded into the project folder. Then the file name must replaced in the *.load()* method of the *SamplePlayer* object, in the *setup()* function of the *render.cpp* file.  
 
 ## *field thresher*
 
