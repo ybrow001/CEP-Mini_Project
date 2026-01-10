@@ -8,6 +8,8 @@ https://github.com/ybrow001/CEP-Mini_Project
 
 # Supporting Documentation for Bela Mini Project Submission
 
+<br>
+
 ## Introduction & General Specifications
 
 In this document I will detail the function of, my motivations for and possible further developments for this Bela project. I will also give a technical overview of the code and an explanation of how it can be run.  <br>
