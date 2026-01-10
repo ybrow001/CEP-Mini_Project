@@ -110,14 +110,10 @@ The *LPF* is applied and works and almost identically to the *HPF* class. A smal
 <br>
 
 In the *render.cpp* file, the above classes are initialised in the *setup()* loop and implemented in the *render()* and nested sample rate loops.
-After processing and playing the audio signal via the *SamplePlayer* class, the signal is processed through the *HPF* and *LPF* classes, before finally passing to the *Feedbacker* class. 
-
-<br>
+After processing and playing the audio signal via the *SamplePlayer* class, the signal is processed through the *HPF* and *LPF* classes, before finally passing to the *Feedbacker* class.  
 
 This signal flow allows the original audio to necessarily be generated at the beginning. The signal is then filtered before noise processing, altering the output of subsequent noise output, by effecting the inout signal into *Feedbacker*. As well as creating the possibility for clean, plainly filtered and delayed audio being output with the right *Feedbacker* settings.  
-Finally, *Feedbacker* is applied last at the end of the signal chain, before outputting through the *audioWrite()* function. It is placed last, as this allows any previous alterations to the sound of the audio signal to be fed into the noise generation processes. It also necessarily places the final hard clipper as the final process in the signal chain before output - this is extremely important as a safety feature, protecting both hardware and hearing from damage.
-
-<br> 
+Finally, *Feedbacker* is applied last at the end of the signal chain, before outputting through the *audioWrite()* function. It is placed last, as this allows any previous alterations to the sound of the audio signal to be fed into the noise generation processes. It also necessarily places the final hard clipper as the final process in the signal chain before output - this is extremely important as a safety feature, protecting both hardware and hearing from damage.  
 
 Lastly, two other processes are carried out in the *render.cpp* file: the implementation of GUI sliders via the Gui and GuiController classes, and interpolation of pan values to prevent clicking and audible artifacts when adjusting the panning of the output.  
 GUI sliders allow the user to adjust parameters of the *SamplePlayer*, *HPF*, *LPF* and *Feedbacker* classes and to adjust output pan values. 
