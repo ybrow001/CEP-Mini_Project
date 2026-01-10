@@ -61,7 +61,7 @@ These classes include:
 - HighpassFilter (HPF) - implementing a biquad highpass filter.
 - LowpassFilter (LPF) - implementing a biquad lowpass filter.
 
-- *SamplePlayer*
+#### *SamplePlayer*
 
 The *SamplePlayer* class was borrowed from the Creative Embedded Programming, Week #3, Lab 0 task - Loading and Playing Samples, Using a Circular Buffer for Delay. 
 
@@ -69,7 +69,7 @@ It loads an audio file into a buffer, linked via an appropriate file pathway in 
 Calling on the *.play()* method within the sample rate loop in the render.cpp file, a read pointer is incremented through the indices of the buffer. By outputting the data from from the read pointer and passing this signal to the audioWrite() function in the same render.cpp loop, the audio output of the player made audible. 
 The read pointer is also wrapped back around to the start of the buffer once it reaches the end, to avoid error from reading indices that do not exist.
 
-- *Feedbacker*
+#### *Feedbacker*
 
 The *Feedbacker* is central to the function of this programme. It takes the audio signal output by the sample player, following processing by the high- and low-pass filters, and uses it as the source for noice generation. 
 This class can be broken down into three sub-features: short delay and comb filter, feedback, and clipping. These produce the noise output by delaying the audio input, feeding it back into itself and applying clipping as a source of non-linearities and a safety feature.  
@@ -85,7 +85,7 @@ The final hard clipper exists primarily as a safety feature, keeping the output 
 
 GUI sliders allow the user to alter the feedback gain, delay time and clipping thresholds of the first hard clipper.  
 
-- *HPF*
+#### *HPF*
 
 The *HPF* class applies filtering via application of formulae for calculating HPF coefficients and use of the digital biquad difference equation, as found in the DSP Cookbook<sup>4</sup>. These calculations take place in the *.initialisation()*, *.process()* and *.update()* methods, determining the setting of cutoff and Q factor values and the processing and outputting of filtered frequencies.  
 
@@ -93,11 +93,11 @@ For the *.process()* method, dry and wet gain arguments are add alongside the in
 
 Through GUI sliders the user is able to manipulate the cutoff frequency, dry/wet signal mix and the Q factor of the filter.
 
-- *LPF*
+#### *LPF*
 
 The *LPF* is applied and works and almost identically to the *HPF* class. A small exception being the order of implementation the *HPF* is applied first in *render.cpp*, the *LPF* is then applied to that filtered signal.  
 
-- *render.cpp*
+#### *render.cpp*
 
 In the *render.cpp* file, the above classes are initialised in the *setup()* loop and implemented in the *render()* and nested sample rate loops.
 After processing and playing the audio signal via the *SamplePlayer* class, the signal is processed through the *HPF* and *LPF* classes, before finally passing to the *Feedbacker* class.  
